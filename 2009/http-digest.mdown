@@ -1,0 +1,15 @@
+After a fair amount of work, I'm happy to report that HTTP Digest Authentication is now a part of Rails 2.3. Although I put the finishing touches to get this into the release, it is based on work done by [Dan Manges][1] and [Xavier Shay][2] . Also, thanks to [Don Parish][3] for bug fixes and improvements after original acceptance.
+
+Read more about HTTP Digest Authentication in Rails 2.3 [Ryan's Scraps][4]. Relevant Lighthouse entries: [1230][5], [1848][6], and [2000][7]. The last one includes a change, not yet approved for 2.3, which allows for using the HA1 part of the digest to store a hash of the password, rather than the cleartext of the original version. Hopefully, we'll get a version of that in soon. Also, the current implementation depends on using a session secret when computing the nonce. [2000][7] proposes a way to avoid this so no session is required.
+
+Hopefully. we'll see the open issues resolved and get this into a 2.3.1 update.
+
+Gregg
+
+ [1]: http://www.dcmanges.com/blog
+ [2]: http://rhnh.net/
+ [3]: http://rails.lighthouseapp.com/users/32494
+ [4]: http://ryandaigle.com/articles/2009/1/30/what-s-new-in-edge-rails-http-digest-authentication
+ [5]: http://rails.lighthouseapp.com/projects/8994/tickets/1230-implement-http-digest-authentication
+ [6]: http://rails.lighthouseapp.com/projects/8994/tickets/1848
+ [7]: http://rails.lighthouseapp.com/projects/8994/tickets/2000-patch-for-http-digest-authentication-uri-comparison

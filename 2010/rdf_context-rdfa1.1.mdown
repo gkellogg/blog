@@ -1,0 +1,12 @@
+ I've updated both [RdfContext][1] and [RDF::RDFa][2] gems to support the latest [RDFa Core 1.1 Editor's Draft  (2010-08-03)][3] semantics. This includes support for the following:
+
+*   Use of a _Processor Graph_ to gather information and errors during the course of parsing. Use the `:processor_graph` option to specify a Graph in which to collect information. There is no published specification for the properties to use, but until there is, each event is saved with a Blank Node subject of type **rdfa.UndefinedPrefixError**, **rdfa:UndefinedTermError**, **rdfa:HostLanguageMarkupError**, **rdfa:ProfileReferenceError**, **rdfa:InformationalMessage**, **rdfa**;MiscellaneousWarning or **rdfa:MiscellaneousError**. Additionally statements with literals for **dc:description**, dc:date, **rdfa:sequence** and **rdfa:source** (path to HTML Node) are generated.
+*   _RDFa Profiles_ allow URI mappings for terms and prefixes along with the specification of a default vocabulary.
+*   RDFa 1.1 prefixes the use of *@prefix* to create prefix mappings, but *@xmlns* continues to be supported.
+*   XMLLiterals must be declared explicitly by setting *@datatype*="rdf:XMLLiteral". In 1.0, any statement with a property that contained anything other than text nodes as children caused an XMLLiteral to be emitted.
+
+Note that until RDFa Core 1.1 is published, all features are subject to change. I will not be attempting to maintain compatibility with draft features that are obsoleted during the standardization process.
+
+ [1]: http://github.com/gkellogg/rdf_context
+ [2]: http://github.com/gkellogg/rdf-rdfa
+ [3]: http://www.w3.org/TR/2010/WD-rdfa-core-20100803/

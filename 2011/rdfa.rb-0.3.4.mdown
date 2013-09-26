@@ -1,0 +1,29 @@
+After several months of gathering updates for [RDF.rb][], we've released version 0.3.4 with several new features:
+
+* Update to BGP query model to support SPARQL semantics,
+* Expandable Litereal support, to allow further implementation of XSD datatypes outside of RDF.rb (see [RDF::XSD](https://github.com/gkellogg/rdf-xsd) gem),
+* More advanced content type detection to allow better selection of the appropriate reader from those available on the client. (Includes selecting among HTML types, such as Microdata and RDFa)
+* Improved CLI with the `rdf` executable providing access to all loaded readers and writers for cross-language serialization and deserialization.
+
+As an example of format detection, consider the following:
+
+    require 'linkeddata'
+    RDF::Graph.load("http://greggkellogg.net/foaf.ttl")
+
+should load Turtle or N3 readers if installed. This becomes more important for ambiguous file types, such as HTML, which could be either RDFa or Microdata, and application/xml, which could be TriX, RDF/XML or even RDFa.
+
+See [documentation](http://rubydoc.info/github/gkellogg/rdf/master/frames) for more specifics on this version of RDF.rb. Note that I've attempted to incorporate suggestions for improving the documentation.
+
+Most of the reader/writer gems have been updated to match this release, in particular [JSON::LD][], [RDF::Microdata][], [RDF::N3][], [RDF::RDFa][], [RDF::RDFXML][], and [RDF::Turtle][]. A future update to the [linkeddata][] gem should reference the latest versions of each, but a simple `gem update` will work too.
+
+There is a slight semantic change for repositories to support SPARQL: a context of false should not match a variable context. This is straight out of SPARQL semantics. Repository implementors who have provided custom implementations of `#query_pattern` should check behavior against rdf-spec version 0.3.4 to verify correct operation.
+
+Next up is a release of SPARQL implemented in pure Ruby. This gem provides full support for SPARQL 1.0 queries.
+
+[RDF.rb]: http://rubygems.org/gems/rdf
+[JSON::LD]: http://rubygems.org/gems/json-ld
+[RDF::Microdata]: http://rubygems.org/gems/rdf-microdata
+[RDF::N3]: http://rubygems.org/gems/rdf-n3
+[RDF::RDFa]: http://rubygems.org/gems/rdf-rdfa [RDF::RDFXML]: http://rubygems.org/gems/rdf-rdfxml
+[RDF::Turtle]: http://rubygems.org/gems/rdf-turtle
+[linkeddata]: http://rubygems.org/gems/linkeddata

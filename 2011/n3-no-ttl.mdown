@@ -1,0 +1,15 @@
+With the release of [RDF::Turtle][RDF::Turtle], starting with version 0.3.5, [RDF::N3][RDF::N3] no longer asserts that it is a reader for Turtle. This includes MIME Types text/turtle, application/turtle, application/x-turtle. Or the .ttl extension or :ttl or :turtle formats. Of course, N3 remains reasonably compatible with Turtle, but the recent RDF 1.1 Working Group publication of the [Turtle Specification][Turtle] has caused some divergence.
+
+Most notably, in Turtle, the empty prefix (':') is no longer a synonym for <#>. In fact, the empty prefix is no longer defined by default.
+
+[RDF::Turtle][RDF::Turtle] defines MIME Types text/turtle, text/rdf+turtle, application/turtle and application/x-turtle.
+
+The officially submitted MIME Type for Turtle is text/turtle with default content coding of UTF-8.
+
+As usual, you can try both these and other RDF gems a the [distiller][distiller] At some point, [RDF::Turtle][RDF::Turtle] will make it into the [linkeddata gem].
+
+[RDF::Turtle]: http://rubygems.org/gems/rdf-turtle
+[RDF::N3]: http://rubygems.org/gems/rdf-turtle
+[Turtle]: http://www.w3.org/TR/2011/WD-turtle-20110809/
+[linkeddata]: http://rubygems.org/gems/linkeddata
+[distiller]: http://rdf.greggkellogg.net/distiller/

@@ -1,0 +1,60 @@
+I added some minor updates to RDF.rb and re-issued versions 0.3.5 for the [rdf][RDF.rb] and [linkeddata][linkeddata] gems. These updates are mostly to better support HTTP content negotaion and to find appropriate readers and writers based on file extension, mime-type, and content sniffing. There are also some minor fixes to aid jRuby and Ruby 1.9.3 support.
+
+More notably, I've released 0.1.0 of the [SPARQL][] gem. The logical behavior is unchanged from the previous release, but it now includes Rack and Sinatra support to easily create middleware for a SPARQL endpoint. When used with the [Linked Data][linkeddata] gem, this includes a range of RDF serializations for `DESCRIBE` and `CONSTRUCT` queries. It also adds HTTP Accept headers to outgoing requests using `FROM` and `FROM NAMED` for RDF/XML and Turtle.
+
+As a simple example, the [Sinatra][] example in the README performs a simple query against a small repository:
+
+    #!/usr/bin/env ruby -rubygems
+    require 'sinatra'
+    require 'sinatra/sparql'
+
+    repository = RDF::Repository.new do |graph|
+      graph << [RDF::Node.new, RDF::DC.title, "Hello, world!"]
+    end
+
+    get '/sparql' do
+      SPARQL.execute("SELECT * WHERE { ?s ?p ?o }", repository)
+    end
+
+A minimal SPARQL endpoint can be described as follows:
+
+    # Sinatra example
+    #
+    # Call as http://localhost:4567/sparql?query=uri,
+    # where `uri` is the URI of a SPARQL query, or
+    # a URI-escaped SPARQL query, for example:
+    #   http://localhost:4567/?query=SELECT%20?s%20?p%20?o%20WHERE%20%7B?s%20?p%20?o%7D
+    require 'sinatra'
+    require 'sinatra/sparql'
+    require 'uri'
+
+    get '/' do
+      settings.sparql_options.merge!(:standard_prefixes => true)
+      repository = RDF::Repository.new do |graph|
+        graph << [RDF::Node.new, RDF::DC.title, "Hello, world!"]
+      end
+      if params["query"]
+        query = query.to_s =~ /^\w:/ ? RDF::Util::File.open_file(params["query"]) : :URI.decode(params["query"].to_s)
+        SPARQL.execute(query, repository)
+      else
+        service_description(:repo => repository)
+      end
+    end
+
+This can be run using `ruby -rubygems example.rb`, or with `rackup` or `shotgun` as `rackup example.rb`
+
+To load a complete to the query repository, or a full dataset including multiple context, load the repository as follows:
+
+    repository = RDF::Repository.load("http://path-to-repo")
+
+This will incur a large startup time for each request, but you can also use a persistent store such as `rdf-mongo`: repository = RDF::Mongo::Repository.new() This will instantiate a persistent MongoDB store, which can be initialized one time using RDF::Mongo::Repository.load. Subsequent instantiations will use the persistent storage, and have better query performance for larger datasets.
+
+For a more complete implementation, see the [RDF Distiller][] running at [http://rdf.greggkellogg.net/sparql](http://rdf.greggkellogg.net/sparql) and freely available to download and modify for your own purposes.
+
+Follow up questions to [public-rdf-ruby](mailto:public-rdf-ruby@w3.org).
+
+[RDF.rb]: http://rubygems.org/gems/rdf
+[linkeddata]: http://rubygems.org/gems/linkeddata
+[SPARQL]: http://rubygems.org/gems/sparql [rdf-mongo]: http://rubygems.org/gems/rdf-mongo
+[RDF Distiller]: http://github.com/gkellogg/rdf-distiller
+[Sinatra]: http://www.sinatrarb.com/

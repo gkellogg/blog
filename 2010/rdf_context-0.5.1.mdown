@@ -1,0 +1,6 @@
+Just pushed version 0.5.1 of [RdfContext][1] to GitHub and [Gemcutter][2]. This version includes a Serializer framework, including a `AbstractSerializer`, `RecursiveSerializer` and Turtle and RDF/XML serializers based on these. The RDF/XML serializer is a big improvement over the previous version, including Typed element names an RDF Container folding using `parseType="collection"`.
+
+RdfContext includes native Ruby parsers for RDF/XML, RDFa and N3-rdf, which includes Turtle and N-Triples. All parsers pass W3C tests (included in specs). It also includes context-aware quad store, with in-memory and SQLite3 storage models.
+
+ [1]: http://github.com/gkellogg/rdf_context
+ [2]: http://gemcutter.org/gems/rdf_context

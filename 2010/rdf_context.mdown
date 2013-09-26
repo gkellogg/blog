@@ -1,0 +1,12 @@
+I've released version 0.4.4 of the [RdfContext][1] gem. As the name implies, RdfContext supports contextual data-stores bound to graphs, along with a `ConjunctiveGraph` providing the union of contexts within a given data-store.
+
+*   Parses RDF/XML, RDFa and N3. RDF/XML and RDFa both pass all relevant W3C test cases (may be run through specs).
+*   `Graph` and `ConjunctiveGraph` with pluggable data-stores. `MemoryStore` and `SQLite3Store` both support _contexts_ as well as _quoted-graphs_ and _formulae_, although no appropriate graph classes yet exist.
+*   Graphs serialize to _N-Triples_ and _RDF/XML_.
+*   An RDF distiller runs on this site to test out different parsers. This is also useful for running automated RDFa Test Harness. 
+
+RdfContext is based, in part on Tom Morris' [Reddy][2] gem. See the [readme][3] on GitHub for more information. `MemoryStore`, `SQLite3Store` and `ConjunctiveGraph` are largely ports of Python RDFLib.
+
+ [1]: http://gemcutter.org/gems/rdf_context
+ [2]: http://gemcutter.org/gems/reddy
+ [3]: http://github.com/gkellogg/rdf_context

@@ -1,0 +1,66 @@
+<div about='http://greggkellogg.net/foaf#me' typeof='foaf:Person'>
+<p>I work on Semantic Web Standards and create [Open Source][1] projects. More FOAF information is available at <a rel="rdfs:isDefinedBy" href="http://greggkellogg.net/pages/about">About</a> and <a href="http://greggkellogg.net/foaf">http://greggkellogg.net/foaf</a>.</p>
+
+<p>My Personal Blog containing both technical and personal information is at <a href='http://greggkellogg.net/' rel='foaf:homepage'>http://greggkellogg.net/</a></p>
+
+These are some of the projects I maintain:
+
+<ul>
+<li>
+<a href="http://rdf.kellogg-assoc.com">Ruby RDF/SPARQL showcase</a>
+</li>
+<li>
+<a href="http://rubygems.org/gems/json-ld" title="RubyGems">JSON::LD Gem</a>
+<a href="http://github.com/ruby-rdf/json-ld" title="GitHub">(GitHub)</a>
+</li>
+<li>
+<a href="http://rubygems.org/gems/rdf-rdfa" title="RubyGems">RDF::RDFa Gem</a>
+<a href="http://github.com/ruby-rdf/rdf-rdfa" title="GitHub">(GitHub)</a>
+</li>
+<li>
+<a href="http://rubygems.org/gems/rdf-microdata" title="RubyGems">RDF::Microdata Gem</a>
+<a href="http://github.com/ruby-rdf/rdf-microdata" title="GitHub">(GitHub)</a>
+</li>
+<li>
+<a href="http://rubygems.org/gems/rdf-n3" title="RubyGems">RDF::N3 Gem</a>
+<a href="http://github.com/ruby-rdf/rdf-n3" title="GitHub">(GitHub)</a>
+</li>
+<li>
+<a href="http://rubygems.org/gems/rdf-rdfxml" title="RubyGems">RDF::RDFXML Gem</a>
+<a href="http://github.com/ruby-rdf/rdf-rdfxml" title="GitHub">(GitHub)</a>
+</li>
+<li>
+<a href="http://rubygems.org/gems/rdf-turtle" title="RubyGems">RDF::Turtle Gem</a>
+<a href="http://github.com/ruby-rdf/rdf-turtle" title="GitHub">(GitHub)</a>
+</li>
+<li>
+<a href="http://rubygems.org/gems/rdf-trig" title="RubyGems">RDF::TriG Gem</a>
+<a href="http://github.com/ruby-rdf/rdf-trig" title="GitHub">(GitHub)</a>
+</li>
+<li>
+<a href="http://rubygems.org/gems/sparql" title="RubyGems">SPARQL Gem</a>
+<a href="http://github.com/ruby-rdf/sparql" title="GitHub">(GitHub)</a>
+</li>
+</ul>
+
+Other information about me:
+
+<dl>
+<dt>Email</dt>
+<dd><a href='mailto:gregg@kellogg-assoc.com' rel='foaf:mbox'>mailto:gregg@kellogg-assoc.com</a></dd>
+
+<dt>Mailbox SHA1</dt>
+<dd property='foaf:mbox_sha1sum'>35bc44e6d0070e5ad50ccbe0d24403c96af2b9bd</dd>
+
+<dt>Name</dt>
+<dd property="foaf:name">Gregg Kellogg</dd>
+
+<dt rel="foaf:account"><span about="#tw" typeof="foaf:OnlineAccount"> <span property="foaf:name">Twitter</span> </span></dt>  
+<dd rel="foaf:account"><span about="#tw" typeof="foaf:OnlineAccount"> <a rel="foaf:page" href="http://twitter.com/gkellogg">@<span about="#tw" property="foaf:accountName">gkellogg</span></a> </span></dd>
+
+<dt rel="foaf:account"><span about="#gp" typeof="foaf:OnlineAccount"> <span property="foaf:name">Google Plus</span> </span></dt>  
+<dd rel="foaf:account"><span about="#gp" typeof="foaf:OnlineAccount"> <a rel="foaf:page" href="https://plus.google.com/u/0/115239936584020095918"><span about="#tw" property="foaf:accountName">greggkellogg</span></a> </span></dd>
+</dl>
+</div>
+
+ [1]: http://github.com/gkellogg

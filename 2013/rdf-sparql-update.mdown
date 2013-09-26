@@ -1,0 +1,60 @@
+<span itemprop="name" style="display:none">RDF.rb and SPARQL updates</span>
+<span itemprop="description">Version 1.0.6 of RDF.rb and 1.0.7 of SPARQL gems released.</span>
+
+I recently pushed updates to [RDF.rb][] and [SPARQL][] gems. These updates contain some useful new features:
+
+## RDF.rb
+The main RDF gem has many updates to bring it closer to the coming update to the RDF 1.1 specifications ([RDF Concepts][], [RDF Semantics][], [Turtle][], [TriG][] [N-Triples][], [N-Quads][], and [JSON-LD][]). Notable changes since the 1.0 release are:
+
+* Make distinction between Plain and Simple literals; Simple literals have no language, plain literals may also have a language. And, in preparation for RDF 1.1, literals having a datatype of xsd:string are considered Simple literals. Language-tagged literals may have a datatype of rdf:langString.
+* Improved support for queries using hash patterns (thanks to @markborkum).
+* Update [N-Triples][] (and [N-Quads][]) readers and writers to support the RDF 1.1 version, including new escape sequences and support for UTF-8, in addition to ASCII. When writing characters are escaped depending on the specified encoding or that inferred from the output file.
+* Term and Statement comparison is dramatically improved improving statement insertion and query performance.
+* Other literal changes required to support SPARQL 1.1
+
+On the 1.1 branch:
+
+* RDF::URI re-written to not require Addressable. This improves general performance of using URIs by about 50% (depends on 1.9+ features, so not included in the 1.0 branch).
+* Support for Ruby versions less than 1.9.2 is dropped.
+
+## SPARQL
+The [SPARQL][] gem is not based on the SPARQL 1.1 grammar, and now includes some features from SPARQL 1.1, including all functions and builtins and variable bindings. Look for new features to be added incrementally; once a critical mass is reached, I'll update the gem version to 1.1 to reflect that this is essentially a 1.1 compatible version of SPARQL. Eventually this will include SPARQL Update and Federated Queries as well.
+
+## Other gems
+* [JSON::LD][] is released as version 1.0.0 and is full compatible with the last-call version of the [JSON-LD][] specifications, including support for framing.
+* [RDF::Turtle][] is fully compatible with the RDF 1.1 version.
+  * Also includes a [Freebase][]-specific reader for fastest performance reading Freebase dumps.
+* [RDF::RDFa][] is compatible with [RDFa Core 1.1][] and [HTML+RDFa 1.1][]
+* [RDF::TriG][] is released as a 1.0.0 version, based on the RDF 1.1 note
+* [RDF::Raptor][] now uses Raptor 2.0, and is fully compatible with the latest version of [Redland/Raptor](http://librdf.org/raptor/).
+
+[JSON::LD]:         http://rubygems.org/gems/json-ld
+[Linked Data]:      http://rubygems.org/gems/linkeddata
+[RDF.rb]:           http://rubygems.org/gems/rdf
+[RDF::Raptor]:      http://rubygems.org/gems/rdf-raptor
+[RDF::RDFa]:        http://rubygems.org/gems/rdf-rdfa
+[RDF::TriG]:        http://rubygems.org/gems/rdf-trig
+[RDF::Turtle]:      http://rubygems.org/gems/rdf-turtle
+[SPARQL]:           http://rubygems.org/gems/sparql
+
+[EARL]:             http://www.w3.org/TR/EARL10-Schema/
+[HTML+RDFa 1.1]:    http://www.w3.org/TR/rdfa-in-html/
+[JSON-LD]:          http://json-ld.org/spec/latest/
+[N-Quads]:          http://www.w3.org/TR/n-quads/
+[N-Triples]:        http://www.w3.org/TR/n-triples/
+[RDF Concepts]:     http://www.w3.org/TR/rdf11-concepts/
+[RDF Semantics]:    http://www.w3.org/TR/rdf11-mt/
+[RDF/XML]:          http://www.w3.org/TR/REC-rdf-syntax/
+[RDFa 1.1 Lite]:    http://www.w3.org/TR/rdfa-lite/
+[RDFa Core 1.1]:    http://www.w3.org/TR/rdfa-core/
+[RDFa Test Suite]:  http://rdfa.info/test-suite/
+[RDFa]:             http://rdfa.info/
+[TriG]:             http://www.w3.org/TR/trig/
+[Turtle]:           http://www.w3.org/TR/turtle/
+[XHTML+RDFa 1.1]:   http://www.w3.org/TR/xhtml-rdfa/
+
+[Freebase]:         https://developers.google.com/freebase/data
+[Backbone.js]:      http://backbonejs.org/
+[Bootstrap.js]:     http://twitter.github.com/bootstrap/index.html
+[BrowserID]:        https://browserid.org/
+[Sinatra]:          http://www.sinatrarb.com/

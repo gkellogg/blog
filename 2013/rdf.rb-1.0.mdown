@@ -1,0 +1,77 @@
+I'm happy to announce the 1.0 release of [RDF.rb][] and related Ruby gems. This release has been a long time coming, and the library has actually been quite stable for some time.
+
+[RDF.rb][] is a [Ruby Gem][] implementing core [RDF][] concepts, such as [Graph](http://rubydoc.info/github/ruby-rdf/rdf/RDF/Graph), [Repository](http://rubydoc.info/github/ruby-rdf/rdf/RDF/Repository), [Statement](http://rubydoc.info/github/ruby-rdf/rdf/RDF/Statement), and [Query](http://rubydoc.info/github/ruby-rdf/rdf/RDF/Query). It also supports core [readers](http://rubydoc.info/github/ruby-rdf/rdf/RDF/Reader) and [writers](http://rubydoc.info/github/ruby-rdf/rdf/RDF/Writer) (parsers and serializers) for [N-Triples][] and [N-Quads][].
+
+Through other gems, more readers and writers are implemented, including:
+
+* [JSON-LD][] using the [JSON::LD][] gem.
+* [Microdata][] using the [RDF::Microdata][] gem.
+* [Notation3][] using the [RDF::N3][] gem.
+* [RDF/JSON][] using the [RDF::JSON][] gem.
+* [RDF/XML][] using the [RDF::RDFXML][] gem.
+* [RDFa][] using the [RDF::RDFa][] gem.
+* [TriG][] using the [RDF::TriG][] gem.
+* [TriX][] using the [RDF::TriX][] gem.
+* [Turtle][] using the [RDF::Turtle][] gem.
+
+Additional readers and writers are available through [Redland](http://librdf.org) [Raptor][] bindings using the [RDF::Raptor][] gem.
+
+In addition to native support for BGP-based queries, there is a full-conferment [SPARQL][] 1.0 gem ([SPARQL gem][]), and SPARQL 1.1 client gem ([SPARQL::Client][]).
+
+All of these gems can be packaged together using the [Linkeddata][], [Rack::LinkedData][], and [Sinatra::LinkedData][] gems.
+
+There are also a number of storage adaptors for popular backends, including the following:
+
+* [MongoDB](http://www.mongodb.org) using the [RDF::Mongo](https://github.com/ruby-rdf/rdf-mongo) gem.
+* [Sesame][] using the [RDF::Sesame](https://github.com/ruby-rdf/rdf-sesame) gem.
+* [Virtuoso](http://virtuoso.openlinksw.com/dataspace/dav/wiki/Main/VOSRDF) using the [RDF::Virtuoso](https://github.com/digibib/rdf-virtuoso) gem.
+* [AllegroGraph](http://www.franz.com/agraph/allegrograph/) using the [RDF::AllegroGraph](https://github.com/ruby-rdf/rdf-agraph) gem.
+
+## Background
+I first became involved with RDF when working on the [Connected Media Experience](http://connectedmediaexperience.org) (CME) design (see [blog entry](http://greggkellogg.net/2011/05/07/cme-and-the-semantic-web)). Having designed a proprietary metadata standard for [Gracenote](http://www.gracenote.com) and [Warner Music Group](http://www.wmg.com) (later for CME), through review with [Lucas Gonze](http://gonze.com/blog/), I was introduced to the [Music Ontology][], which had done an extremely thorough modeling of the music domain. This caused significant debate in the CME community, which lead to an updated design based on RDF, and many of the ideas from the [Music Ontology][].
+
+During the same review, I was also introduced to [RDFa][] as a mechanism of embedding music metadata within a web page. Since CME is endeavoring to create a standard for enhanced digital media packages, [HTML5][] and [RDFa][] are natural technologies to utilize.
+
+My methodology for approaching architectures and specifications is based on parallel prototyping, to validate the details of a design, and sometimes serve as the bases for an implementation. For several years (starting in 2007) I had been using [Ruby on Rails](http://rubyonrails.org) and was quite invested in the [Ruby](http://www.ruby-lang.org/en/). My first attempts to integrate [RDFa][] into the implementation made use of the [Raptor][] parser, which unfortunately was not up-to-date with respect to the [RDFa][] 1.0 specification current at the time. Additionally, I found that the Ruby Bindings suffered from memory leaks, and went to look for a native Ruby implementation. This lead to [Tom Morris](http://tommorris.org/)' [Reddy](https://github.com/tommorris/reddy) gem. This was a port of the Python [rdflib](http://code.google.com/p/rdflib/) package to Ruby, which was going in the right direction, but had fallen into disuse. I created my own fork, and later released as [RdfContext](https://github.com/gkellogg/rdf_context) which had complete implementations for [RDF/XML][], [RDFa][] 1.0, and [Notation3][] (N3-rdf level).
+
+In the mean time, [Arto Bendiken](http://ar.to) and [Ben Lavender](http://bhuga.net) had been working on [RDF.rb][], taking a different approach closer to [Sesame][]. The design of [RDF.rb][] is quite elegant, making effective use of natural Ruby idioms, and taking an approach based heavily on using Ruby module extensions. After a prod by [Nick Humfrey](http://www.aelius.com/njh/) who had started a port of my [RDF/XML][] parser, I jumped in and ported the bulk of my RDF parsers and serializers, eventually adding several more, to make the [RDF.rb][] platform one of the most complete in terms of standards support across all major (and minor) serialization formats. In 2010, I was asked to join the [RDF.rb][] core development team, and soon became the primary maintainer after Arto and Ben became fully committed with [Dydra](http://dydra.com/).
+
+Arto and I finally got together recently to move all of the gems primary repositories to the [Ruby RDF](http://ruby-rdf.github.com) organization on GitHub, and release them as 1.0. The next significant release should be 1.1, to coincide with the release of the [RDF 1.1](http://www.w3.org/TR/rdf11-concepts/) specs from the W3C.
+
+[RDF.rb]: http://ruby-rdf.github.com/rdf
+[N-Triples]: http://en.wikipedia.org/wiki/N-Triples
+[N-Quads]: http://sw.deri.org/2008/07/n-quads
+[RDF.rb]: http://ruby-rdf.github.com/rdf
+[RDF::JSON]: http://ruby-rdf.github.com/rdf-json
+[RDF::Microdata]: http://ruby-rdf.github.com/rdf-microdata
+[RDF::N3]: http://ruby-rdf.github.com/rdf-n3
+[RDF::RDFa]: http://ruby-rdf.github.com/rdf-rdfa
+[RDF::RDFXML]: http://ruby-rdf.github.com/rdf-rdfxml
+[RDF::TriG]: http://ruby-rdf.github.com/rdf-trig
+[RDF::TriX]: http://ruby-rdf.github.com/rdf-trix
+[RDF::Turtle]: http://ruby-rdf.github.com/rdf-turtle
+[RDF::Raptor]: http://ruby-rdf.github.com/rdf-raptor
+[JSON::LD]: http://gkellogg.github.com/json-ld
+[SPARQL gem]: http://ruby-rdf.github.com/sparql
+[SPARQL::Client]: http://ruby-rdf.github.com/sparql-client
+[LinkedData]: http://ruby-rdf.github.com/linkeddata
+[Rack::LinkedData]: http://ruby-rdf.github.com/rack-linkeddata
+[Sinatra::LinkedData]: http://ruby-rdf.github.com/sinatra-linkeddata
+[Linked Data]: http://linkeddata.org/
+[Microdata]: http://en.wikipedia.org/wiki/Microdata_(HTML)
+[N-Quads]: http://sw.deri.org/2008/07/n-quads/
+[N-Triples]: http://en.wikipedia.org/wiki/N-Triples
+[Notation3]: http://en.wikipedia.org/wiki/Notation3
+[RDF/JSON]: http://n2.talis.com/wiki/RDF_JSON_Specification
+[RDF/XML]: http://en.wikipedia.org/wiki/RDF/XML
+[RDFa]: http://en.wikipedia.org/wiki/RDFa
+[SPARQL]: http://en.wikipedia.org/wiki/Sparql
+[TriG]: http://wifo5-03.informatik.uni-mannheim.de/bizer/trig/
+[TriX]: http://en.wikipedia.org/wiki/TriX_(syntax)
+[Turtle]: http://www.w3.org/TR/turtle/
+[HTML5]: http://www.w3.org/TR/html5/
+[Ruby Gem]: http://rubygems.org/
+[JSON-LD]: http://json-ld.org/
+[Sesame]: http://www.openrdf.org
+[Music Ontology]: http://musicontology.com
+[Raptor]: http://librdf.org/raptor/

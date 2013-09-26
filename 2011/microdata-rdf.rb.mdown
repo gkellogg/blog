@@ -1,0 +1,12 @@
+I've just release version 0.1.0 of the RDF::Microdata gem ([rubygems][1], [github][2]) for the [RDF.rb][3] suite. This version contains only a reader (parser). Writing is not supported at this point.
+
+Use it pretty much like any other RDF.rb reader:
+
+    graph = RDF::Graph.load("etc/foaf.html", :format => :microdata)
+
+Feedback either to me, or [public-rdf-ruby][4].
+
+ [1]: http://rubygems.org/gems/rdf-microdatea
+ [2]: https://github.com/gkellogg/rdf-microdata
+ [3]: http://github.com/bendiken/rdf
+ [4]: mail:public-rdf-ruby@w3c.org
