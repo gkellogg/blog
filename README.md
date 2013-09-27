@@ -76,3 +76,4 @@ Gregg's Blog Posts
 ## 2013
 * [RDF.rb 1.0 Release](2013/rdf.rb-1.0.mdown) 2013-01-25T20:40
 * [RDF.rb and SPARQL gem updates](2013/rdf-sparql-update.mdown) 2013-05-11T23:12
+* [Philippines September 2013](2013/philippines.mdown) 2013-09-27T16:37
