@@ -1,7 +1,7 @@
-blog
+blog entries
 ====
 
-Gregg's Blog Posts
+Gregg's Blog Posts, hosted [on my blog](http://greggkellogg.net/)
 
 ## 2006
 * [Managing large projects](2006/managing-large-projects.mdown) 2006-10-31T14:10
