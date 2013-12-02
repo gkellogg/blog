@@ -14,5 +14,5 @@ The ships you see are known as the *Mothball Fleet*. They include the Glomar Exp
 
 Thanks to Gary and Terry (reporter and pilot) for making this a most memorable experience! Gregg
 
- [1]: http://kellogg-assoc.com/pages/photography
- [2]: http://kellogg-assoc.com/galleries/Above%20the%20Bay%20Area/index.html
+ [1]: /pages/photography
+ [2]: https://dl.dropboxusercontent.com/u/90616964/Above%20the%20Bay%20Area/index.html

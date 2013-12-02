@@ -334,7 +334,7 @@ Given HTML’s strong support for lists (e.g., `ol`, `ul`, `dl`, …), it is ama
     </h4>
     
     <p>
-      @mhepp couldn't agree more. Note my own RDF-RDFa serializer: <a href="http://rdf.kellogg-assoc.com/distiller" rel="nofollow">http://rdf.kellogg-assoc.com/distiller</a>. Anything beyond insertion of pre-formatted snippets requires algorithmic HTML+RDFa serialization. Thus the importance of being able to act on such markup using CSS and/or jQuery. As long as HTML is hand-crafted, the use of markup such as RDFa will have limited impact; it's just too difficult to get it right.
+      @mhepp couldn't agree more. Note my own RDF-RDFa serializer: <a href="http://rdf.greggkellogg.net/distiller" rel="nofollow">http://rdf.greggkellogg.net/distiller</a>. Anything beyond insertion of pre-formatted snippets requires algorithmic HTML+RDFa serialization. Thus the importance of being able to act on such markup using CSS and/or jQuery. As long as HTML is hand-crafted, the use of markup such as RDFa will have limited impact; it's just too difficult to get it right.
     </p>
     
     <hr />

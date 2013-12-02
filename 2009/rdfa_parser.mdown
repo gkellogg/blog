@@ -4,7 +4,13 @@ The gem is based on previous work done by Ben Adida and some libraries borrowed 
 
 The project is hosted on [GitHub][3], feel free to clone. You can try out the parser through a [distiller][4].
 
+## 2013 Update
+
+This gem is now obsoleted by the [RDF::RDFa][5] and the distiller is now [here][6]
+
  [1]: http://gemcutter.org/gems/rdfa_parser
  [2]: http://gemcutter.org/gems/reddy
  [3]: http://github.com/gkellogg/rdfa_parser
  [4]: http://kellogg-assoc.com/distiller
+ [5]: /http://github.com/gems/rdf-rdfa
+ [6]: http://rdf.greggkellogg.net/distiller
