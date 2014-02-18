@@ -6,6 +6,6 @@ Also, I uploaded a [slide show][5] made from the the [Socorro photo album][4] 
 
  [1]: http://www.divephotoguide.com/images/news/uploaded/article_4687/524005322.jpg
  [2]: http://www.solmarv.com/
- [3]: https://dl.dropboxusercontent.com/u/90616964/Socorro%20Picks/index.html
- [4]: https://dl.dropboxusercontent.com/u/90616964/Socorro%202010-04/index.html
- [5]: https://dl.dropboxusercontent.com/u/90616964/Socorro.mov
+ [3]: http://greggkellogg.net/galleries/Socorro%20Picks/index.html
+ [4]: http://greggkellogg.net/galleries/Socorro%202010-04/index.html
+ [5]: http://greggkellogg.net/galleries/Socorro.mov
