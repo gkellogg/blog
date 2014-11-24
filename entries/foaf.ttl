@@ -1,0 +1,100 @@
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix g: <http://greggkellogg.net/home/about/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfa: <http://www.w3.org/ns/rdfa#> .
+@prefix schema: <http://schema.org/> .
+@prefix xhv: <http://www.w3.org/1999/xhtml/vocab#> .
+
+<http://github.com/ruby-rdf> a foaf:Group;
+   foaf:member <http://greggkellogg.net/foaf#me> .
+
+<http://greggkellogg.net/foaf> a foaf:PersonalProfileDocument;
+   foaf:maker <http://greggkellogg.net/foaf#me>;
+   foaf:primaryTopic <http://greggkellogg.net/foaf#me> .
+
+g: rdfa:usesVocabulary schema: .
+
+<http://greggkellogg.net/home/about/#colophon> xhv:role xhv:contentinfo .
+
+<http://greggkellogg.net/home/about/#content> xhv:role xhv:main .
+
+<http://greggkellogg.net/home/about/#masthead> xhv:role xhv:banner .
+
+<http://greggkellogg.net/home/about/#searchform> xhv:role xhv:search .
+
+<http://greggkellogg.net/home/about/#secondary> xhv:role xhv:complementary .
+
+<http://greggkellogg.net/home/about/#site-navigation> xhv:role xhv:navigation .
+
+<http://rubygems.org/gems/ebnf> a doap:Project;
+   doap:name "ebnf"@en-US .
+
+<http://rubygems.org/gems/json-ld> a doap:Project;
+   doap:name "JSON::LD"@en-US .
+
+<http://rubygems.org/gems/rdf> a doap:Project;
+   doap:name "RDF.rb"@en-US .
+
+<http://rubygems.org/gems/rdf-microdata> a doap:Project;
+   doap:name "RDF::Microdata"@en-US .
+
+<http://rubygems.org/gems/rdf-n3> a doap:Project;
+   doap:name "RDF::N3"@en-US .
+
+<http://rubygems.org/gems/rdf-rdfa> a doap:Project;
+   doap:name "RDF::RDFa"@en-US .
+
+<http://rubygems.org/gems/rdf-trig> a doap:Project;
+   doap:name "RDF::TriG"@en-US .
+
+<http://rubygems.org/gems/rdf-turtle> a doap:Project;
+   doap:name "RDF::Turtle"@en-US .
+
+<http://rubygems.org/gems/sparql> a doap:Project;
+   doap:name "SPARQL"@en-US .
+
+<http://github.com/gkellogg> a doap:GitRepository .
+
+<http://greggkellogg.net/foaf#me> a foaf:Person;
+   doap:homepage <http://github.com/gkellogg>;
+   doap:repository <http://github.com/gkellogg>;
+   owl:sameAs <http://greggkellogg.net/foaf.rdf>,
+     <http://greggkellogg.net/foaf.ttl>,
+     <http://foaf.me/gkellogg#me>;
+   foaf:currentProject <http://www.w3.org/2013/csvw/wiki/Main_Page>,
+     <http://www.w3.org/community/json-ld/>,
+     <http://www.w3.org/TR/microdata-rdf>,
+     <http://rubygems.org/gems/ebnf>,
+     <http://rubygems.org/gems/json-ld>,
+     <http://rubygems.org/gems/rdf>,
+     <http://rubygems.org/gems/rdf-microdata>,
+     <http://rubygems.org/gems/rdf-n3>,
+     <http://rubygems.org/gems/rdf-rdfa>,
+     <http://rubygems.org/gems/rdf-trig>,
+     <http://rubygems.org/gems/rdf-turtle>,
+     <http://rubygems.org/gems/sparql>,
+     <http://rdf.greggkellogg.net/>;
+   foaf:depiction <http://www.gravatar.com/avatar/42f948adff3afaa52249d963117af7c8.png>;
+   foaf:homepage <http://greggkellogg.net/>;
+   foaf:interest <http://greggkellogg.net/photography>;
+   foaf:pastProject [ foaf:name "Cafex Corporation"@en-US],  [ foaf:name "Xippix Inc."@en-US],
+     <http://www.siterra.com/>,
+     <http://dbpedia.org/resource/NeXT>,
+     <http://dbpedia.org/resource/EO_Personal_Communicator>,
+     <http://www.microunity.com/>,
+     <http://connectedmediaexperience.org/>,
+     <http://dbpedia.org/resource/Gracenote>,
+     <http://dbpedia.org/resource/Macy%27s_West>,
+     <http://dbpedia.org/resource/ChaCha_(search_engine)>,
+     <http://www.w3.org/2011/rdf-wg>,
+     <http://www.w3.org/2010/02/rdfa/>;
+   foaf:topic_interest <http://dbpedia.org/resource/PenPoint>,
+     <http://dbpedia.org/resource/Mach_(kernel)>,
+     <http://dbpedia.org/resource/Unix>,
+     <http://dbpedia.org/resource/Semantic_web>,
+     <http://dbpedia.org/resource/Linked_data>,
+     <http://dbpedia.org/resource/Ruby_(programming_language)>;
+   foaf:weblog <http://greggkellogg.net/blog/>;
+   foaf:workplaceHomepage <http://w3.org/> .

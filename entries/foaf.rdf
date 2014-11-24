@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<rdf:RDF xmlns:doap='http://usefulinc.com/ns/doap#' xmlns:foaf='http://xmlns.com/foaf/0.1/' xmlns:g='http://greggkellogg.net/home/about/' xmlns:owl='http://www.w3.org/2002/07/owl#' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' xmlns:rdfa='http://www.w3.org/ns/rdfa#' xmlns:schema='http://schema.org/' xmlns:xhv='http://www.w3.org/1999/xhtml/vocab#'>
+  <foaf:Group rdf:about='http://github.com/ruby-rdf'>
+    <foaf:member>
+      <foaf:Person rdf:about='http://greggkellogg.net/foaf#me'>
+        <doap:homepage>
+          <doap:GitRepository rdf:about='http://github.com/gkellogg'>
+          </doap:GitRepository>
+        </doap:homepage>
+        <doap:repository rdf:resource='http://github.com/gkellogg' />
+        <owl:sameAs rdf:resource='http://greggkellogg.net/foaf.rdf' />
+         <owl:sameAs rdf:resource='http://greggkellogg.net/foaf.ttl' />
+         <owl:sameAs rdf:resource='http://foaf.me/gkellogg#me' />
+        <foaf:currentProject rdf:resource='http://www.w3.org/2013/csvw/wiki/Main_Page' />
+         <foaf:currentProject rdf:resource='http://www.w3.org/community/json-ld/' />
+         <foaf:currentProject rdf:resource='http://www.w3.org/TR/microdata-rdf' />
+         <foaf:currentProject>
+          <doap:Project rdf:about='http://rubygems.org/gems/ebnf'>
+            <doap:name xml:lang='en-US'>ebnf</doap:name>
+          </doap:Project>
+        </foaf:currentProject>
+         <foaf:currentProject>
+          <doap:Project rdf:about='http://rubygems.org/gems/json-ld'>
+            <doap:name xml:lang='en-US'>JSON::LD</doap:name>
+          </doap:Project>
+        </foaf:currentProject>
+         <foaf:currentProject>
+          <doap:Project rdf:about='http://rubygems.org/gems/rdf'>
+            <doap:name xml:lang='en-US'>RDF.rb</doap:name>
+          </doap:Project>
+        </foaf:currentProject>
+         <foaf:currentProject>
+          <doap:Project rdf:about='http://rubygems.org/gems/rdf-microdata'>
+            <doap:name xml:lang='en-US'>RDF::Microdata</doap:name>
+          </doap:Project>
+        </foaf:currentProject>
+         <foaf:currentProject>
+          <doap:Project rdf:about='http://rubygems.org/gems/rdf-n3'>
+            <doap:name xml:lang='en-US'>RDF::N3</doap:name>
+          </doap:Project>
+        </foaf:currentProject>
+         <foaf:currentProject>
+          <doap:Project rdf:about='http://rubygems.org/gems/rdf-rdfa'>
+            <doap:name xml:lang='en-US'>RDF::RDFa</doap:name>
+          </doap:Project>
+        </foaf:currentProject>
+         <foaf:currentProject>
+          <doap:Project rdf:about='http://rubygems.org/gems/rdf-trig'>
+            <doap:name xml:lang='en-US'>RDF::TriG</doap:name>
+          </doap:Project>
+        </foaf:currentProject>
+         <foaf:currentProject>
+          <doap:Project rdf:about='http://rubygems.org/gems/rdf-turtle'>
+            <doap:name xml:lang='en-US'>RDF::Turtle</doap:name>
+          </doap:Project>
+        </foaf:currentProject>
+         <foaf:currentProject>
+          <doap:Project rdf:about='http://rubygems.org/gems/sparql'>
+            <doap:name xml:lang='en-US'>SPARQL</doap:name>
+          </doap:Project>
+        </foaf:currentProject>
+         <foaf:currentProject rdf:resource='http://rdf.greggkellogg.net/' />
+        <foaf:depiction rdf:resource='http://www.gravatar.com/avatar/42f948adff3afaa52249d963117af7c8.png' />
+        <foaf:homepage rdf:resource='http://greggkellogg.net/' />
+        <foaf:interest rdf:resource='http://greggkellogg.net/photography' />
+        <foaf:pastProject>
+          <rdf:Description rdf:nodeID='g70183044669260'>
+            <foaf:name xml:lang='en-US'>Cafex Corporation</foaf:name>
+          </rdf:Description>
+        </foaf:pastProject>
+         <foaf:pastProject>
+          <rdf:Description rdf:nodeID='g70183044700040'>
+            <foaf:name xml:lang='en-US'>Xippix Inc.</foaf:name>
+          </rdf:Description>
+        </foaf:pastProject>
+         <foaf:pastProject rdf:resource='http://www.siterra.com/' />
+         <foaf:pastProject rdf:resource='http://dbpedia.org/resource/NeXT' />
+         <foaf:pastProject rdf:resource='http://dbpedia.org/resource/EO_Personal_Communicator' />
+         <foaf:pastProject rdf:resource='http://www.microunity.com/' />
+         <foaf:pastProject rdf:resource='http://connectedmediaexperience.org/' />
+         <foaf:pastProject rdf:resource='http://dbpedia.org/resource/Gracenote' />
+         <foaf:pastProject rdf:resource='http://dbpedia.org/resource/Macy%27s_West' />
+         <foaf:pastProject rdf:resource='http://dbpedia.org/resource/ChaCha_(search_engine)' />
+         <foaf:pastProject rdf:resource='http://www.w3.org/2011/rdf-wg' />
+         <foaf:pastProject rdf:resource='http://www.w3.org/2010/02/rdfa/' />
+        <foaf:topic_interest rdf:resource='http://dbpedia.org/resource/PenPoint' />
+         <foaf:topic_interest rdf:resource='http://dbpedia.org/resource/Mach_(kernel)' />
+         <foaf:topic_interest rdf:resource='http://dbpedia.org/resource/Unix' />
+         <foaf:topic_interest rdf:resource='http://dbpedia.org/resource/Semantic_web' />
+         <foaf:topic_interest rdf:resource='http://dbpedia.org/resource/Linked_data' />
+         <foaf:topic_interest rdf:resource='http://dbpedia.org/resource/Ruby_(programming_language)' />
+        <foaf:weblog rdf:resource='http://greggkellogg.net/blog/' />
+        <foaf:workplaceHomepage rdf:resource='http://w3.org/' />
+      </foaf:Person>
+    </foaf:member>
+  </foaf:Group>
+  <foaf:PersonalProfileDocument rdf:about='http://greggkellogg.net/foaf'>
+    <foaf:maker rdf:resource='http://greggkellogg.net/foaf#me' />
+    <foaf:primaryTopic rdf:resource='http://greggkellogg.net/foaf#me' />
+  </foaf:PersonalProfileDocument>
+  <rdf:Description rdf:about='http://greggkellogg.net/home/about/'>
+    <rdfa:usesVocabulary rdf:resource='http://schema.org/' />
+  </rdf:Description>
+  <rdf:Description rdf:about='http://greggkellogg.net/home/about/#colophon'>
+    <xhv:role rdf:resource='http://www.w3.org/1999/xhtml/vocab#contentinfo' />
+  </rdf:Description>
+  <rdf:Description rdf:about='http://greggkellogg.net/home/about/#content'>
+    <xhv:role rdf:resource='http://www.w3.org/1999/xhtml/vocab#main' />
+  </rdf:Description>
+  <rdf:Description rdf:about='http://greggkellogg.net/home/about/#masthead'>
+    <xhv:role rdf:resource='http://www.w3.org/1999/xhtml/vocab#banner' />
+  </rdf:Description>
+  <rdf:Description rdf:about='http://greggkellogg.net/home/about/#searchform'>
+    <xhv:role rdf:resource='http://www.w3.org/1999/xhtml/vocab#search' />
+  </rdf:Description>
+  <rdf:Description rdf:about='http://greggkellogg.net/home/about/#secondary'>
+    <xhv:role rdf:resource='http://www.w3.org/1999/xhtml/vocab#complementary' />
+  </rdf:Description>
+  <rdf:Description rdf:about='http://greggkellogg.net/home/about/#site-navigation'>
+    <xhv:role rdf:resource='http://www.w3.org/1999/xhtml/vocab#navigation' />
+  </rdf:Description>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+</rdf:RDF>
