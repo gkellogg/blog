@@ -58,6 +58,8 @@ The group has just released new working drafts for [Model for Tabular Data][] an
 ## An implementation in Ruby
 My method for working on specifications is to develop code implementing these specifications as they are being developed. This, of necessity, means that there is a lot of work (and re-work) as the details are being worked out, but I view it as a necessary part of spec development to ensure that the result can be implemented. In this case, this is embodied in the [rdf-tabular][] gem, which implements the [Model for Tabular Data][] and [Metadata Format][] as well as both [CSV2RDF][] and [CSV2JSON][] and much of the validation required for these to work. As is true for all [RDF.rb][] gems, this is available through the public domain ([Unlicense](http://unlicense.org)) and is freely usable by anyone wishing to get a start on their own implementation.
 
+You can try this out on my [RDF Distiller][], or using the [Structured Data Linter][].
+
 ## Test Suite
 With updated working drafts, the next phase of the CSVW Working Group will be to develop more tests. There is already a fair [Test Suite][] available which probes various corner-cases of validating and converting tabular data. There are already over 80 tests defined, and more will be forthcoming in the coming weeks and months. (Disclaimer, these tests have yet to be accepted by the WG).
 
