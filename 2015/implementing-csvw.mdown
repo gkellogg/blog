@@ -1,7 +1,7 @@
-As I blogged about [before](http://greggkellogg.net/%3Fp%3D293), I've implemented the [current drafts](http://www.w3.org/blog/data/2015/04/16/csv-on-the-web-seeking-comments-and-implementations/) of [CSV on the Web][] in the [rdf-tabular gem][]. The gem is is available from [rdf-tabular repo][] and is in the public domain ([Unlicense](http://unlicense.org)) and is freely usable by anyone wishing to get a start on their own implementation. For those wishing to take an incremental approach, this post describes the basic workings of the gems, highlights more advanced cases necessary to pass the [Test Suite][] and attempts to provide some insight into the process of implementing the specifications.
+As I blogged about [before](http://greggkellogg.net/%3Fp%3D293), I've implemented the [current drafts](http://www.w3.org/blog/data/2015/04/16/csv-on-the-web-seeking-comments-and-implementations/) of [CSV on the Web][] in the [rdf-tabular gem][]. The gem is is available from [rdf-tabular repo][] and is in the public domain ([Unlicense](http://unlicense.org)) and is freely usable by anyone wishing to get a start on their own implementation. For those wishing to take an incremental approach, this post describes the basic workings of the gem, highlights more advanced cases necessary to pass the [Test Suite][] and attempts to provide some insight into the process of implementing the specifications.
 
 ## CSVW – in a nutshell
-The basic purpose of the CSVW specifications is to do an informed process of CSVs into an _annotated data model_, and use this model as the basis of creating RDF or JSON. At a minimum, this means assuming that the first row of a CSV is a _header row_ containing _titles_ for cells in that CSV, and that each row constitutes a record with properties based on the _row titles_ with values from each cell. We'll use the canonical example of the [tree-ops](http://w3c.github.io/csvw/tests/tree-ops.csv) example from the [Model for Tabular Data][]
+The basic purpose of the CSVW specifications is to do an informed process of CSVs into an _annotated data model_, and use this model as the basis of creating RDF or JSON. At a minimum, this means assuming that the first row of a CSV is a _header row_ containing _titles_ for cells in that CSV, and that each row constitutes a record with properties based on the _column titles_ with values from each cell. We'll use the canonical example of the [tree-ops](http://w3c.github.io/csvw/tests/tree-ops.csv) example from the [Model for Tabular Data][]
 
     GID,On Street,Species,Trim Cycle,Inventory Date
     1,ADDISON AV,Celtis australis,Large Tree Routine Prune,10/18/2010
@@ -29,7 +29,7 @@ This example has a header row and two data rows. The simple transformation of th
 
 This is minimally useful, but we can use this as a walk-through of how the [rdf-tabular gem]() creates this.
 
-The first step is to retrieve the document from it's URL: `http://w3c.github.io/csvw/tests/tree-ops.csv`. We then can look for metadata associated with the file to inform the creation of the _annotated table_; this information might come from by the user specifying to location of metadata separately, from an HTTP Link header, by looking at `http://w3c.github.io/csvw/tests/tree-ops.csv-metadata.json` for file-specific metadata, or at `http://w3c.github.io/csvw/tests/metadata.json` for directory-specific metadata. In this case, there is none, so we constructed _embedded metatata_ from just the _header row_. The process for locating metadata is described in [Creating Annotated Tables](http://www.w3.org/TR/tabular-data-model/#creating-annotated-tables), and creating embedded metadata is described in [Parsing Tabular Data](http://www.w3.org/TR/tabular-data-model/#parsing). Basically, we're looking to create a _table description_ with a _schema_ describing each _column_, and not surprisingly, we'll end up with the following:
+The first step is to retrieve the document from it's URL: `http://w3c.github.io/csvw/tests/tree-ops.csv`. We then can look for metadata associated with the file to inform the creation of the _annotated table_; this information might come from by the user specifying to location of metadata separately, from an HTTP Link header, by looking at `http://w3c.github.io/csvw/tests/tree-ops.csv-metadata.json` for file-specific metadata, or at `http://w3c.github.io/csvw/tests/metadata.json` for directory-specific metadata. In this case, there is none, so we constructed _embedded metatata_ from just the _header row_. The process for locating metadata is described in [Creating Annotated Tables](http://www.w3.org/TR/tabular-data-model/#creating-annotated-tables), and creating embedded metadata is described in [Parsing Tabular Data](http://www.w3.org/TR/tabular-data-model/#parsing). Basically, we're looking to create a _table description_ with a _schema_ describing each _column_ resulting in the following:
 
     {
       "@context": "http://www.w3.org/ns/csvw",
@@ -45,7 +45,7 @@ The first step is to retrieve the document from it's URL: `http://w3c.github.io/
       }
     }
 
-By following the rules in the [Metadata Format][], we then create annotations on an _annotated table_ that look like the following:
+By following the rules in the [Metadata Format][], we then create annotations on an _annotated table_ (an abstract model, shown in arbitrary JSON):
 
     {
       "@type": "AnnotatedTableGroup",
@@ -105,7 +105,7 @@ By following the rules in the [Metadata Format][], we then create annotations on
       ]
     }
 
-Here we gather some metadata based on the column numbers (logical and actual, which are the same here) and create a default for the _column name_ from _titles_. Also, note that _titles_ is expanded to a [natural language property](http://w3c.github.io/csvw/metadata/#dfn-natural-language-property), which is basically a [JSON-LD Language Map](http://www.w3.org/TR/json-ld/#language-maps) where `und` is used when there is no language. The _column name_ is percent encoded so that it can be used in a [URI template][].
+Here we gather some metadata based on the row and column numbers (logical and actual, which are the same here) and create a default for the _column name_ from _titles_. Also, note that _titles_ is expanded to a [natural language property](http://w3c.github.io/csvw/metadata/#dfn-natural-language-property), which is basically a [JSON-LD Language Map](http://www.w3.org/TR/json-ld/#language-maps) where `und` is used when there is no language. The _column name_ is percent encoded so that it can be used in a [URI template][].
 
 Note that the `rows` and `cells` values are empty, as we haven't actually processed any rows from the input yet.
 
@@ -119,7 +119,7 @@ The [rdf-tabular gem][] implements the [RDF::Reader](http://www.rubydoc.info/git
 
 Basically, the job of the reader is to create the _abstract tabular data model_ and use it to read each row of the table(s) described in the model and use that to generate RDF triples (it can also be used to generate JSON output without going the RDF, but that's another story).
 
-The [rdf-tabular gem][] implements `RDF::Tabular::Metadata`, with subclasses for the different kinds of metadata we need. This implements `#each_row` given an input file and yields rows. For the Ruby implementation, we use the [CSV building library](http://docs.ruby-lang.org/en/2.1.0/CSV.html) and use dialect information to set parsing defaults. The gist of the implementation looks like the following:
+The [rdf-tabular gem][] implements `RDF::Tabular::Metadata`, with subclasses for the different kinds of metadata we need. This provides the `#each_row` method, which given an input file yields each row. For the Ruby implementation, we use the [CSV library](http://docs.ruby-lang.org/en/2.1.0/CSV.html) and use dialect information to set parsing defaults. The gist of the implementation looks like the following:
 
     def each_row(input)
       csv = ::CSV.new(input, csv_options)
@@ -132,7 +132,7 @@ The [rdf-tabular gem][] implements `RDF::Tabular::Metadata`, with subclasses for
       end
     end
 
-A row then extracts information from a table row provides cells:
+A `Row` then abstracts information for each table row and provides the cells for that row:
 
     # Wraps each resulting row
     class Row
@@ -183,7 +183,7 @@ For that we need to define a Metadata file.
 
 ### Defining Metadata
 
-  A Metadata file is a [JSON-LD][] document (really, it has the structure of a JSON-LD document, it is parsed as JSON) which allows us to define properties on metadata _declarations_ which directly relate to the _abstract tabular data model_. For example, let's look at the metadata description for the [tree-ops](http://w3c.github.io/csvw/tests/test011/tree-ops.csv) example: [tree-ops.csv-metadata.json](http://w3c.github.io/csvw/tests/test011/tree-ops.csv-metadata.json):
+  A Metadata file is a [JSON-LD][] document (really, it has the structure of a JSON-LD document, it is parsed as JSON) which allows us to define _properties_ on metadata _declarations_ which directly relate to the _abstract tabular data model_. For example, let's look at the metadata description for the [tree-ops](http://w3c.github.io/csvw/tests/test011/tree-ops.csv) example: [tree-ops.csv-metadata.json](http://w3c.github.io/csvw/tests/test011/tree-ops.csv-metadata.json):
 
     {
       "@context": ["http://www.w3.org/ns/csvw", {"@language": "en"}],
@@ -231,36 +231,34 @@ For that we need to define a Metadata file.
 
 Here we have a couple of different things going on. Note the following:
 
-<pre><code>
-{
-  "@context": ["http://www.w3.org/ns/csvw", <b>{"@language": "en"}</b>],
-  "url": "tree-ops.csv",
-  <b>"dc:title": "Tree Operations",
-  "dcat:keyword": ["tree", "street", "maintenance"],
-  "dc:publisher": {
-    "schema:name": "Example Municipality",
-    "schema:url": {"@id": "http://example.org"}
-  },
-  "dc:license": {"@id": "http://opendefinition.org/licenses/cc-by/"},
-  "dc:modified": {"@value": "2010-12-31", "@type": "xsd:date"},</b>
-  ...
-}
-</code></pre>
+    {
+      "@context": ["http://www.w3.org/ns/csvw", {"@language": "en"}],
+      "url": "tree-ops.csv",
+      "dc:title": "Tree Operations",
+      "dcat:keyword": ["tree", "street", "maintenance"],
+      "dc:publisher": {
+        "schema:name": "Example Municipality",
+        "schema:url": {"@id": "http://example.org"}
+      },
+      "dc:license": {"@id": "http://opendefinition.org/licenses/cc-by/"},
+      "dc:modified": {"@value": "2010-12-31", "@type": "xsd:date"},
+      ...
+    }
 
-The _prefixed name_ properties are _common properties_, basically just JSON-LD that's inserted into the model to define _annotations_ on the model. In this case, their defined on a _Table_, so they annotate that object. As it is JSON-LD, the string values take the `@langauge` defined in the context. CSVW uses a [dialect of JSON-LD](http://www.w3.org/TR/tabular-metadata/#json-ld-dialect) which places some restrictions on what can go here. Basically, nothing more can go into the `@context` besides `@language` and `@base`; it also must use `http://www.w3.org/ns/csvw` and only the terms and prefixes defined within that context can be used along with absolute IRIs.
+The _prefixed name_ properties are _common properties_, basically just JSON-LD that's inserted into the model to define _annotations_ on the model. In this case, their defined on a _Table_, so they annotate that model. As it is JSON-LD, the string values take the `@langauge` defined in the context. CSVW uses a [dialect of JSON-LD](http://www.w3.org/TR/tabular-metadata/#json-ld-dialect) which places some restrictions on what can go here. Basically, nothing more can go into the `@context` besides `@language` and `@base`; it also must use `http://www.w3.org/ns/csvw` and only the terms and prefixes defined within that context can be used along with absolute IRIs.
 
 <pre>
 {
   "@context": ["http://www.w3.org/ns/csvw", {"@language": "en"}],
   "url": "tree-ops.csv",
   ...
-  <b>"tableSchema"</b>: {
+  "tableSchema": {
     "columns": [{
-      <b>"name": "GID"</b>,
-      "titles": [<b>"GID", "Generic Identifier"</b>],
-      <b>"dc:description": "An identifier for the operation on a tree.",
+      "name": "GID",
+      "titles": ["GID", "Generic Identifier"],
+      "dc:description": "An identifier for the operation on a tree.",
       "datatype": "string",
-      "required": true</b>
+      "required": true
     }, {
       "name": "on_street",
       "titles": "On Street",
@@ -280,17 +278,17 @@ The _prefixed name_ properties are _common properties_, basically just JSON-LD t
       "name": "inventory_date",
       "titles": "Inventory Date",
       "dc:description": "The date of the operation that was performed.",
-      <b>"datatype": {"base": "date", "format": "M/d/yyyy"}</b>
+      "datatype": {"base": "date", "format": "M/d/yyyy"}
     }],
-    <b>"primaryKey": "GID"</b>,
-    "<b>aboutUrl": "#gid-{GID}"</b>
+    "primaryKey": "GID",
+    "aboutUrl": "#gid-{GID}"
   }
 }
 </pre>
 
 The `tableSchema` property tells us that this is a _Table description_; we could also have added a `"@type": "Table"` property to make this explicit, but it's not necessary. Metadata always starts with either a _Table description_ or a _TableGroup description_.
 
-We define an explicit _name_ property for the first column. If we didn't, it would take the first value from _titles_. The _column_ has a _common property_, which is presently not used in the transformation, but exists in the _annotated tabular data model_. It also declarse the data type to be `string`, which is a synonym for `xsd:string`, and a value is **required**, meaning that it is considered an error if a cell value has an empty string (or one matching that defined using the `null` annotation). Note that `datatype` is an _inherited property_, meaning that it could have been defined on the _Table_, _Schema_ or _Column_ and would be in scope for all cells based on the inheritance model.
+We define an explicit _name_ property for the first column. If we didn't, it would take the first value from _titles_. The _column_ has a _common property_, which is presently not used in the transformation, but exists in the _annotated tabular data model_. It also declares the data type to be `string`, which is a synonym for `xsd:string`, and a value is `required`, meaning that it is considered an error if a cell value has an empty string (or one matching that defined using the `null` annotation). Note that `datatype` is an _inherited property_, meaning that it could have been defined on the _Table_, _Schema_ or _Column_ and would be in scope for all cells based on the inheritance model.
 
 The last column uses a complex datatype: It is based on `xsd:date` and uses a `format` string to match string values and map them onto the datatype. This allows a date of the form 4/17/2015 to be interpreted as `"2015-04-17"^^xsd:date` by using _date field symbols_ as defined in [UAX35](http://www.unicode.org/reports/tr35/tr35-31/tr35.html).
 
@@ -393,56 +391,54 @@ Merging is a recursive process starting from _normalized metadata_. Mostly value
 
 In the [tree-ops-virtual.json](http://w3c.github.io/csvw/examples/tree-ops-virtual.json) example, _URI template properties_ were defined:
 
-<pre><code>
-{
-  "url": "tree-ops.csv",
-  "@context": ["http://www.w3.org/ns/csvw", {"@language": "en"}],
-  "tableSchema": {
-    "columns": [{
-      "name": "GID",
-      "titles": "GID",
-      "datatype": "string",
-      <b>"propertyUrl": "schema:url"</b>,
-      <b>"valueUrl": "#gid-{GID}"</b>
-    }, {
-      "name": "on_street",
-      "titles": "On Street",
-      "datatype": "string",
-      <b>"aboutUrl": "#location-{GID}"</b>,
-      <b>"propertyUrl": "schema:streetAddress"</b>
-    }, {
-      "name": "species",
-      "titles": "Species",
-      "datatype": "string",
-      <b>"propertyUrl": "schema:name"</b>
-    }, {
-      "name": "trim_cycle",
-      "titles": "Trim Cycle",
-      "datatype": "string"
-    }, {
-      "name": "inventory_date",
-      "titles": "Inventory Date",
-      "datatype": {"base": "date", "format": "M/d/yyyy"},
-      "aboutUrl": "#event-{inventory_date}",
-      "propertyUrl": "schema:startDate"
-    }, <b>{
-      "propertyUrl": "schema:event",
-      "valueUrl": "#event-{inventory_date}",
-      "virtual": true
-    }, {
-      "propertyUrl": "schema:location",
-      "valueUrl": "#location-{GID}",
-      "virtual": true
-    }, {
-      "aboutUrl": "#location-{GID}",
-      "propertyUrl": "rdf:type",
-      "valueUrl": "schema:PostalAddress",
-      "virtual": true
-    }</b>],
-    <b>"aboutUrl": "#gid-{GID}"</b>
-  }
-}
-</code></pre>
+    {
+      "url": "tree-ops.csv",
+      "@context": ["http://www.w3.org/ns/csvw", {"@language": "en"}],
+      "tableSchema": {
+        "columns": [{
+          "name": "GID",
+          "titles": "GID",
+          "datatype": "string",
+          "propertyUrl": "schema:url",
+          "valueUrl": "#gid-{GID}"
+        }, {
+          "name": "on_street",
+          "titles": "On Street",
+          "datatype": "string",
+          "aboutUrl": "#location-{GID}",
+          "propertyUrl": "schema:streetAddress"
+        }, {
+          "name": "species",
+          "titles": "Species",
+          "datatype": "string",
+          "propertyUrl": "schema:name"
+        }, {
+          "name": "trim_cycle",
+          "titles": "Trim Cycle",
+          "datatype": "string"
+        }, {
+          "name": "inventory_date",
+          "titles": "Inventory Date",
+          "datatype": {"base": "date", "format": "M/d/yyyy"},
+          "aboutUrl": "#event-{inventory_date}",
+          "propertyUrl": "schema:startDate"
+        }, {
+          "propertyUrl": "schema:event",
+          "valueUrl": "#event-{inventory_date}",
+          "virtual": true
+        }, {
+          "propertyUrl": "schema:location",
+          "valueUrl": "#location-{GID}",
+          "virtual": true
+        }, {
+          "aboutUrl": "#location-{GID}",
+          "propertyUrl": "rdf:type",
+          "valueUrl": "schema:PostalAddress",
+          "virtual": true
+        }],
+        "aboutUrl": "#gid-{GID}"
+      }
+    }
 
 This introduces several new concepts:
 
@@ -487,49 +483,47 @@ The last three columns are _virtual columns_, as they don't correspond to data a
 
 Processing this requires some enhancement to `RDF::Tabular::Row#initialize` method:
 
-<pre><code>
-# Wraps each resulting row
-class Row
-  attr_reader :values
+    # Wraps each resulting row
+    class Row
+      attr_reader :values
 
-  # Class for returning values
-  Cell = Struct.new(:table, :column, :row, :stringValue, :aboutUrl, :propertyUrl, :valueUrl, :value, :errors) do
-    <b>
-    def set_urls(mapped_values)
-      %w(aboutUrl propertyUrl valueUrl).each do |prop|
-        # If the cell value is nil, and it is not a virtual column
-        next if prop == "valueUrl" && value.nil? && !column.virtual
-        if v = column.send(prop.to_sym)
-          t = Addressable::Template.new(v)
-          mapped = t.expand(mapped_values).to_s
-          url = row.context.expand_iri(mapped, documentRelative: true)
-          self.send("#{prop}=".to_sym, url)
+      # Class for returning values
+      Cell = Struct.new(:table, :column, :row, :stringValue, :aboutUrl, :propertyUrl, :valueUrl, :value, :errors) do
+    
+        def set_urls(mapped_values)
+          %w(aboutUrl propertyUrl valueUrl).each do |prop|
+            # If the cell value is nil, and it is not a virtual column
+            next if prop == "valueUrl" && value.nil? && !column.virtual
+            if v = column.send(prop.to_sym)
+              t = Addressable::Template.new(v)
+              mapped = t.expand(mapped_values).to_s
+              url = row.context.expand_iri(mapped, documentRelative: true)
+              self.send("#{prop}=".to_sym, url)
+            end
+          end
         end
+    
+      end
+
+      def initialize(row, metadata, number, source_number)
+        @values = []
+        skipColumns = metadata.dialect.skipColumns.to_i
+        columns = metadata.tableSchema.columns
+        row.each_with_index do |value, index|
+          next if index < skipColumns
+          column = columns[index - skipColumns]
+          @values << cell = Cell.new(metadata, column, self, value)
+      
+          datatype = column.datatype || Datatype.new(base: "string", parent: column)
+          cell_value = value_matching_datatype(value.dup, datatype, expanded_dt, column.lang)
+          map_values[columns[index - skipColumns].name] =  cell_value.to_s
+      
+        end
+
+        # Map URLs for row
+        ...
       end
     end
-    </b>
-  end
-
-  def initialize(row, metadata, number, source_number)
-    @values = []
-    skipColumns = metadata.dialect.skipColumns.to_i
-    columns = metadata.tableSchema.columns
-    row.each_with_index do |value, index|
-      next if index < skipColumns
-      column = columns[index - skipColumns]
-      @values << cell = Cell.new(metadata, column, self, value)
-      <b>
-      datatype = column.datatype || Datatype.new(base: "string", parent: column)
-      cell_value = value_matching_datatype(value.dup, datatype, expanded_dt, column.lang)
-      map_values[columns[index - skipColumns].name] =  cell_value.to_s
-      </b>
-    end
-
-    # Map URLs for row
-    ...
-  end
-end
-</code></pre>
 
 This introduces datatype matching through `#value_matching_datatype` (not detailed), creates a `map_values` structure that can be used for [URI template][] processing, and then calls `Cell#set_urls` to actually create `aboutUrl`, `propertyUrl`, and `valueUrl` annotations on the cell.
 
@@ -561,87 +555,81 @@ For example the [tree-ops-ext.csv](http://w3c.github.io/csvw/examples/tree-ops-e
 
 The [metadata file](http://w3c.github.io/csvw/examples/tree-ops-ext.csv-metadata.json) adds the `separator` property to the _comments_ column:
 
-<pre><code>
-{
-  "tableSchema": {
-    "columns": [
-      ...
-      {
-        "name": "comments",
-        "titles": "Comments",
-        "dc:description": "Supplementary comments relating to the operation or tree.",
-        "datatype": "string",
-        <b>"separator": ";"</b>
+    {
+      "tableSchema": {
+        "columns": [
+          ...
+          {
+            "name": "comments",
+            "titles": "Comments",
+            "dc:description": "Supplementary comments relating to the operation or tree.",
+            "datatype": "string",
+            "separator": ";"
+          }
+        ]
       }
-    ]
-  }
-}
-</code></pre>
+    }
 
 The effect of `separator` is to split the string value into multiple values and parse them using any `datatype` description. This is shown using slight modifications to `RDF::Tabular::Row#initialize` and `RDF::Tabular::Reader#each_statement`:
 
-<pre><code>
-# Wraps each resulting row
-class Row
-  attr_reader :values
-  def initialize(row, metadata, number, source_number)
-    @values = []
-    skipColumns = metadata.dialect.skipColumns.to_i
-    columns = metadata.tableSchema.columns
-    row.each_with_index do |value, index|
-      next if index < skipColumns
-      column = columns[index - skipColumns]
-      @values << cell = Cell.new(metadata, column, self, value)
-      datatype = column.datatype || Datatype.new(base: "string", parent: column)
+    # Wraps each resulting row
+    class Row
+      attr_reader :values
+      def initialize(row, metadata, number, source_number)
+        @values = []
+        skipColumns = metadata.dialect.skipColumns.to_i
+        columns = metadata.tableSchema.columns
+        row.each_with_index do |value, index|
+          next if index < skipColumns
+          column = columns[index - skipColumns]
+          @values << cell = Cell.new(metadata, column, self, value)
+          datatype = column.datatype || Datatype.new(base: "string", parent: column)
 
-      <b>
-      cell_values = column.separator ? value.split(column.separator) : [value]
+      
+          cell_values = column.separator ? value.split(column.separator) : [value]
 
-      cell_values = cell_values.map do |v|
-        value_matching_datatype(v.dup, datatype, expanded_dt, column.lang)
+          cell_values = cell_values.map do |v|
+            value_matching_datatype(v.dup, datatype, expanded_dt, column.lang)
+          end
+
+          cell.value = (column.separator ? cell_values : cell_values.first)
+      
+          map_values[columns[index - skipColumns].name] =  (column.separator ? cell_values.map(&:to_s) : cell_values.first.to_s)
+        end
+
+        # Map URLs for row
+        @values.each_with_index do |cell, index|
+          mapped_values = map_values.merge(
+            "_name" => URI.decode(cell.column.name),
+            "_column" => cell.column.number,
+            "_sourceColumn" => cell.column.sourceNumber
+          )
+          cell.set_urls(mapped_values)
+        end
+    
       end
-
-      cell.value = (column.separator ? cell_values : cell_values.first)
-      </b>
-      map_values[columns[index - skipColumns].name] =  (column.separator ? cell_values.map(&:to_s) : cell_values.first.to_s)
     end
-
-    <b># Map URLs for row
-    @values.each_with_index do |cell, index|
-      mapped_values = map_values.merge(
-        "_name" => URI.decode(cell.column.name),
-        "_column" => cell.column.number,
-        "_sourceColumn" => cell.column.sourceNumber
-      )
-      cell.set_urls(mapped_values)
-    end
-    </b>
-  end
-end
-</code></pre>
 
 The only change to `#each_statement` is to consider multiple cell values:
 
-<pre><code>
-def each_statement(&block)
-  metadata.each_row(input) do |row|
-    default_cell_subject = RDF::Node.new
-    row.values.each_with_index do |cell, index|
-      cell_subject = cell.aboutUrl || default_cell_subject
-      propertyUrl = cell.propertyUrl || RDF::URI("#{metadata.url}##{cell.column.name}")
-      <b>
-      if cell.column.valueUrl
-        yield RDF::Statement(cell_subject, propertyUrl, cell.column.valueUrl)
-      else
-        Array(cell.value).each do |v|
-          yield RDF::Statement(cell_subject, propertyUrl, v)
+    def each_statement(&block)
+      metadata.each_row(input) do |row|
+        default_cell_subject = RDF::Node.new
+        row.values.each_with_index do |cell, index|
+          cell_subject = cell.aboutUrl || default_cell_subject
+          propertyUrl = cell.propertyUrl || RDF::URI("#{metadata.url}##{cell.column.name}")
+      
+          if cell.column.valueUrl
+            yield RDF::Statement(cell_subject, propertyUrl, cell.column.valueUrl)
+          else
+            Array(cell.value).each do |v|
+              yield RDF::Statement(cell_subject, propertyUrl, v)
+            end
+          end
+      
         end
       end
-      </b>
     end
-  end
-end
-</code></pre>
 
 ### Common Properties and Notes
 
