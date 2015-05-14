@@ -167,7 +167,7 @@ Now we can implement `RDF::Tabular::Reader#each_statement`:
       end
     end
 
-That's pretty much the basis of a Ruby implementation. There's more work to do in `#each_statement`, as it's initially invoked with a _TableGroup_, which recursively invokes it again for each _Table_, which then calls again for the actual CSV, but that's all setup. There's also work in `RDF::Tabular::Reader#initialize` to find the metadata, merge multiple metadata documents together and so forth.
+That's pretty much the basis of a Ruby implementation. There's more work to do in `#each_statement`, as it's initially invoked with a _TableGroup_, which recursively invokes it again for each _Table_, which then calls again for the actual CSV, but that's all setup. There's also work in `RDF::Tabular::Reader#initialize` to find the metadata, ensure that it is compatible with the actual tables, and so forth.
 
 ## Fleshing out with more details
 
@@ -381,11 +381,9 @@ Note that the _common properties_ have been expanded and the `@context` simplifi
 
 [Normalization](http://www.w3.org/TR/tabular-metadata/#normalization) places metadata into a consistent format where compact values are expanded, values which may be an _Array_ are made into an _Array_, _link properties_ have their URL expanded based on the base of the metadata and _object properties_ which are in the form of a URL string are opened and replaced with the content of the resource they reference.
 
-### Merging Metadata
+### Ensuring Metadata Compatibility (was Merging Metadata)
 
-The [Locating Metadata](http://www.w3.org/TR/tabular-data-model/#locating-metadata) describes the various places metadata files may be found. [Creating Annotated Tables](http://www.w3.org/TR/tabular-data-model/#creating-annotated-tables) defines the process of creating the final metadata when starting with either a Metadata File or a CSV. This calls for [Merging Metadata](http://www.w3.org/TR/tabular-metadata/#merging-metadata) files. In most cases, this means using the metadata to create _embedded metadata_ and merging the _embedded metadata_ into the _located metadata_. This is necessary to ensure that the CSV file matches the schema described in metadata by ensuring that the _titles_ in the CSV match the _titles_ in the metadata. However, there are cases when multiple metadata files may need to be merged together.
-
-Merging is a recursive process starting from _normalized metadata_. Mostly values from the left hand side are retained, and values from the right hand side are added. In some cases it's slightly more complicated. Many applications will work just fine if metadata is not merged, but it is important for validation.
+The [Locating Metadata](http://www.w3.org/TR/tabular-data-model/#locating-metadata) describes the various places metadata files may be found. [Creating Annotated Tables](http://www.w3.org/TR/tabular-data-model/#creating-annotated-tables) defines the process of creating the final metadata when starting with either a Metadata File or a CSV. This calls for ensuring [Metadata Compatibility](http://w3c.github.io/csvw/syntax/#metadata-compatibility). Given metadata, this can be used to find one or more tabular data files. These files are considered *compatible* with the metadata, if they are referenced from the metadata (i.e., there is a Table Description referencing that particular tabular data file), and the columns in the Table Description Schema, match the columns in the tabular data file by comparing titles or names from the column metadata with the title of the tabular data file column, if it has one. This is necessary to ensure that the CSV file matches the schema described in metadata.
 
 ### URI Templates
 
@@ -638,6 +636,10 @@ Common Properties and Notes are simply embedded [JSON-LD][] within the metadata 
 ## Conclusion
 
 This article has shown the basis for implementing the [CSV on the Web][] specifications, and hopefully will aid in more implementations.
+
+## Update 2014-05-14
+
+This post has been updated to reflect the fact the metadata merging has been removed from CSVW, simplifying an implementation even further.
 
 [JSON-LD]:          http://www.w3.org/TR/json-ld "JSON-LD 1.0"
 [JSON-LD Framing]:  http://json-ld.org/spec/latest/json-ld-framing/
